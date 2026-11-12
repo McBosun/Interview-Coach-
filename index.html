@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hospitality Manager Interview Coach</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><h1>Interview Coach</h1><small id="sub">Hospitality managers</small></header>
+<main id="main">
+<div id="setup" class="card">
+<h2 style="margin:0 0 4px;font-size:1.15rem">Practice your hospitality manager interview</h2>
+<p style="color:var(--mute);margin:0">Six questions, honest feedback after each answer, and a final scorecard.</p>
+<label>Role you're interviewing for</label>
+<select id="role"><option>General Manager</option><option>Front Office Manager</option><option>Food &amp; Beverage Manager</option><option>Housekeeping Manager</option><option>Revenue Manager</option><option>Events &amp; Banquet Manager</option></select>
+<label>Property type</label>
+<select id="prop"><option>Beach resort</option><option>Business hotel</option><option>Boutique hotel</option><option>Restaurant group</option><option>Lodge / guest house</option></select>
+<label>Interviewer style</label>
+<select id="tone"><option>Friendly but thorough</option><option>Tough and probing</option><option>Very formal, panel style</option></select>
+<label>Your experience</label>
+<select id="lvl"><option>First management role</option><option>2 to 5 years in management</option><option>5+ years, senior</option></select>
+<div style="margin-top:18px"><button class="btn" id="start" style="width:100%">Start interview</button></div>
+<div id="serr" class="err hide"></div>
+</div>
+<div id="chat" class="hide"><div class="pl" id="pl"></div><div class="prog"><i id="bar"></i></div><div id="log"></div></div>
+</main>
+<footer id="foot" class="hide">
+<div class="row" style="flex-direction:column;align-items:stretch;gap:8px;margin-bottom:8px">
+<div id="vst" class="pl" style="text-align:center;margin:0">The interviewer will speak each question</div>
+<button class="btn" id="vmic" style="padding:16px;font-size:1.05rem">🎤 Tap to answer</button>
+<div style="display:flex;gap:8px"><button class="btn ghost" id="rep" style="flex:1">🔊 Replay</button><button class="btn ghost" id="mute" style="flex:1">Voice on</button></div>
+</div>
+<div class="row">
+<button class="btn ghost hide" id="mic" title="Dictate">🎤</button>
+<textarea id="inp" rows="1" placeholder="Type your answer, or record above and it appears here…"></textarea>
+<button class="btn" id="send">Send</button>
+</div>
+</footer>
+<script src="standalone.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
