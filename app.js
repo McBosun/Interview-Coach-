@@ -49,7 +49,7 @@ async function begin(){
   prog();await turn();
 }
 async function send(){
-  if(busy)return;var t=$('inp').value.trim();if(!t)return;
+  if(busy)return;var t=$('inp').value.trim();if(!t){$('vst').textContent='Nothing to send yet. Tap Record answer, or tap Type.';return}
   $('inp').value='';$('inp').style.height='auto';
   if(!hist.length)hist.push({role:'user',content:'(start)'}),hist.pop();
   hist.push({role:'user',content:t});n++;add('me',t);prog();await turn();
@@ -71,7 +71,7 @@ $('inp').addEventListener('input',function(){this.style.height='auto';this.style
   function startTranscriptOnly(){if(!hasT){curStop();$('vst').textContent='This browser blocks the microphone. Tap Type to answer, or open the page in Chrome.';return}recording=true;listening=true;transOnly=true;vm.textContent='⏹ Stop';$('vst').textContent='Listening… (audio saving isn’t available here)'}
   vm.onclick=async function(){
     if(busy)return;
-    if(recording){if(transOnly){transOnly=false;curStop();idle();$('vst').textContent='Check your answer, then tap Send';return}try{mr.stop()}catch(e){}curStop();return}
+    if(recording){if(transOnly){transOnly=false;curStop();idle();setTimeout(function(){if($('inp').value.trim()){send()}else{$('vst').textContent='I couldn’t hear any words. Try again or tap Type.'}},800);return}try{mr.stop()}catch(e){}curStop();return}
     stopSpeak();
     var base0=$('inp').value.trim();
     if(dict){dict.start().catch(function(){});curStop=function(){try{dict.stop().catch(function(){})}catch(e){}}}
@@ -80,7 +80,7 @@ $('inp').addEventListener('input',function(){this.style.height='auto';this.style
     try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){startTranscriptOnly();return}
     chunks=[];mr=new MediaRecorder(stream);
     mr.ondataavailable=function(ev){if(ev.data&&ev.data.size)chunks.push(ev.data)};
-    mr.onstop=function(){stream.getTracks().forEach(function(t){t.stop()});idle();if(chunks.length)clip(new Blob(chunks,{type:mr.mimeType||'audio/webm'}));$('vst').textContent=hasT?'Check the transcript below, edit if needed, then tap Send':'Audio saved. Type your answer or use your keyboard’s mic key, then tap Send'};
+    mr.onstop=function(){stream.getTracks().forEach(function(t){t.stop()});idle();if(chunks.length)clip(new Blob(chunks,{type:mr.mimeType||'audio/webm'}));setTimeout(function(){if($('inp').value.trim()){$('vst').textContent='Sending your answer…';send()}else{$('vst').textContent=hasT?'I couldn’t hear any words. Tap Record answer and try again, or tap Type.':'This browser can’t turn speech into text, so tap Type to enter your answer.'}},800)};
     mr.start();recording=true;listening=true;vm.textContent='⏹ Stop recording';$('vst').textContent='Recording…';
   };
   var live=document.createElement('div');live.id='live';$('inp').parentNode.insertBefore(live,$('inp'));
