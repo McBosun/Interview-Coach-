@@ -36,7 +36,7 @@ async function turn(){
   }catch(e){
     if(e&&e.code==='not_granted'){d.innerHTML='Permission to use Claude was declined, so the interviewer can\u2019t run. Reload and allow it to continue.';}
     else if(e&&e.code==='rate_limited'){d.innerHTML='Too many requests just now. Wait a moment and send again.';hist.pop();n--;}
-    else{d.innerHTML='Something went wrong reaching the interviewer. Please try sending again.';if(hist.length&&hist[hist.length-1].role==='user'){hist.pop();n--}}
+    else{d.innerHTML='Something went wrong reaching the interviewer. '+(e&&e.message?esc(String(e.message)):'Please try sending again.');if(hist.length&&hist[hist.length-1].role==='user'){hist.pop();n--}}
   }finally{busy=false;if(n<TOTAL)$('send').disabled=false;prog();scroll()}
 }
 async function begin(){

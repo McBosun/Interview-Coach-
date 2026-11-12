@@ -3,12 +3,13 @@
 (function () {
   if (window.claude && window.claude.use) return;
   var KEY = 'hic_key', MODEL = 'claude-sonnet-5-5';
-  function key() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
+  function key() { try { return (localStorage.getItem(KEY) || '').trim(); } catch (e) { return ''; } }
   window.claude = {
     use: async function (name) {
       if (name === 'sample') {
         return async function (messages, opts) {
-          var r = await fetch('https://api.anthropic.com/v1/messages', {
+          var r;
+          try { r = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
             headers: {
               'content-type': 'application/json',
@@ -18,8 +19,15 @@
             },
             body: JSON.stringify({ model: MODEL, max_tokens: 900, messages: messages }),
             signal: opts && opts.signal
-          });
-          if (!r.ok) throw { code: r.status === 429 ? 'rate_limited' : 'api_' + r.status };
+          }); } catch (err) {
+            if (err && err.name === 'AbortError') throw err;
+            throw { code: 'network', message: 'Could not reach api.anthropic.com. Check your internet connection, any ad blocker, and that your API key has no stray characters.' };
+          }
+          if (!r.ok) {
+            var m = ''; try { var ej = await r.json(); m = (ej.error && ej.error.message) || ''; } catch (x) {}
+            var hint = r.status === 401 ? 'Your API key was rejected. Re-paste it.' : r.status === 429 ? 'Rate limit reached. Wait a moment and try again.' : m;
+            throw { code: r.status === 429 ? 'rate_limited' : 'api_' + r.status, message: '(' + r.status + ') ' + hint };
+          }
           var j = await r.json();
           var t = (j.content || []).map(function (c) { return c.text || ''; }).join('');
           if (opts && opts.onText) opts.onText({ text: t });
