@@ -13,7 +13,9 @@ A mock-interview app: the interviewer speaks each question, gives feedback on yo
 2. Repository **Settings → Pages → Build and deployment**: source **Deploy from a branch**, branch **main**, folder **/ (root)**, then Save.
 3. After a minute your link is `https://<your-username>.github.io/<repo-name>/`.
 
-## Your API key
-Open the page, paste your Anthropic API key in the box, and start. The key stays in your browser only. Don't share a page with your key saved in it, and prefer a key with a spend limit.
+## No API key needed
+The app works out of the box with a built-in interviewer: a bank of hospitality manager questions for each role, instant feedback on every answer, and a scorecard. It scores with simple rules (structure, guest focus, leadership, numbers), not AI.
 
-Voice input uses your browser's speech recognition (Chrome and Edge work best). If it isn't available, record or type your answer.
+**Optional:** paste an Anthropic API key on the first screen for a smarter AI interviewer. The key stays in your browser only. If the key is rejected (error 401) or unreachable, the app clears it and falls back to the built-in interviewer automatically.
+
+Voice: the interviewer reads questions aloud. Voice answers use your browser's speech recognition (Chrome and Edge work best); you can also record or type.
