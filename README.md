@@ -19,3 +19,5 @@ The app works out of the box with a built-in interviewer: a bank of hospitality 
 **Optional:** paste an Anthropic API key on the first screen for a smarter AI interviewer. The key stays in your browser only. If the key is rejected (error 401) or unreachable, the app clears it and falls back to the built-in interviewer automatically.
 
 Voice: the interviewer reads questions aloud. Voice answers use your browser's speech recognition (Chrome and Edge work best); you can also record or type.
+
+If your browser can't transcribe speech, the app converts your recording to text on your own device using a small speech model (about 40 MB, downloaded once, English only), then sends it.
